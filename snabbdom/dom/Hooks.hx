@@ -7,16 +7,16 @@ using snabbdom.VirtualNodeDataTools;
 import snabbdom.dom.VirtualNodeDom as VNode;
 
 typedef PreHook = Void -> Any;
-typedef InitHook = VNode -> Any;
-typedef CreateHook = VNode -> VNode -> Any;
-typedef InsertHook = VNode -> Any;
-typedef PrePatchHook = VNode -> VNode -> Any;
-typedef UpdateHook = VNode -> VNode -> Any;
-typedef PostPatchHook = VNode -> VNode -> Any;
-typedef DestroyHook = VNode -> Any;
+typedef InitHook = VNode -> Void;
+typedef CreateHook = VNode -> VNode -> Void;
+typedef InsertHook = VNode -> Void;
+typedef PrePatchHook = VNode -> VNode -> Void;
+typedef UpdateHook = VNode -> VNode -> Void;
+typedef PostPatchHook = VNode -> VNode -> Void;
+typedef DestroyHook = VNode -> Void;
 typedef Closure = Void -> Void;
-typedef RemoveHook = VNode -> Closure -> Any;
-typedef PostHook = Void -> Any;
+typedef RemoveHook = VNode -> Closure -> Void;
+typedef PostHook = Void -> Void;
 
 class HookApi {
 
@@ -30,6 +30,10 @@ class HookApi {
     public var destroy:DestroyHook;
     public var remove:RemoveHook;
     public var post:PostHook;
+
+    public function new():Void {
+        
+    }
 }
 
 

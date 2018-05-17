@@ -71,15 +71,17 @@ class H {
 
         var keys = [for (field in fields) field[0]];
 
-
-        var structure = 'attrs:untyped {' + [
+        var newstructure= '{' + [
             for (field in fields) if (
             field[0] != 'skip_styles' &&
             field[0] != 'skip_attributes' &&
             field[0] != 'style' &&
             field[0].indexOf('on') != 0) '${field[0]}:${field[1]}'
         ].join(",") + '}';
+        var structure = 'attrs:untyped '+newstructure;
 
+        var newdata = Context.parse(newstructure, Context.currentPos());
+        trace(newstructure);
         var events = [];
         var key:String = null;
 
@@ -130,7 +132,7 @@ class H {
 
         }
 
-
+        trace(structure);
         var data = Context.parse('{' + structure + '}', Context.currentPos());
         var rest = exprs.slice(2);
 
@@ -144,10 +146,12 @@ class H {
         var rt_expr = null;
 
         rt_expr = if (text == null) {
-            macro {
-                {sel:$sel, data:$data, children:untyped $a{rest}, elm:null, text:null};
-            }
+
+                macro {
+                    {sel:$sel, data:$data, children:untyped $a{rest}, elm:null, text:null};
+                }
         } else {
+
             macro {
                 {sel:$sel, data:$data, children:null,elm:null, text:$e{text}};
             }

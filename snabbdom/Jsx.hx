@@ -27,7 +27,6 @@ class Jsx {
 			var value = node.get(attr);
 			if (isInterploated(value) == false)  {
 				if (attr == 'style') {
-					trace(value);
 					cache_node = cache_node.add(cacheStyle);
 					cache_string.push('cacheStyle');
 				}
@@ -151,6 +150,7 @@ class Jsx {
 						args.push(parseJsxExpr(token, pos));
 						return '';
 					});
+
 				}
 			}
 			else if (node.nodeType == Xml.Element)
@@ -173,6 +173,7 @@ class Jsx {
 		{
 			macro $v{value};
 		}
+
 	}
 
 	public static function setDisplayName()

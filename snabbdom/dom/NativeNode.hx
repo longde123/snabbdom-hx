@@ -113,6 +113,7 @@ abstract NativeNode(js.html.Element) from js.html.Element to js.html.Element {
         this.insertBefore(new_node, ref_node);
     }
 
+
     public inline function removeChild(element) {
         trace('remove-child');
 

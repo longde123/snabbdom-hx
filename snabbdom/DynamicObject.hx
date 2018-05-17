@@ -2,8 +2,8 @@ package snabbdom;
 
 abstract DynamicObject<T>(Dynamic<T>) from Dynamic<T> {
 
-    public inline function new() {
-        this = {};
+    public inline function new(t:Dynamic<T>) {
+        this = t;
     }
 
     @:arrayAccess
@@ -27,12 +27,22 @@ abstract DynamicObject<T>(Dynamic<T>) from Dynamic<T> {
     public inline function remove(key:String):Bool {
         return Reflect.deleteField(this, key);
     }
-
+    @from
+    public inline function fromDynamic(t:Dynamic<T>) {
+        return new DynamicObject(t);
+    }
     public inline function keys():Array<String> {
         #if js
           return untyped Object.keys(this);
         #else
         return Reflect.fields(this);
         #end
+    }
+    public inline function clone():Dynamic<T> {
+        var c={};
+        for(k in keys()){
+            Reflect.setField(   c, k, Reflect.field(this,k));
+        }
+        return c;
     }
 }

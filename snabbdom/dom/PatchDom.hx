@@ -12,7 +12,7 @@ using snabbdom.VirtualNodeDataTools;
 class PatchDom {
 
 
-    inline static function vnode(sel:Dynamic, data:Dynamic, children, ?text, ?elm:Dynamic):Vnode {
+    inline static public function vnode(sel:Dynamic, data:Dynamic, children:Vnodes, ?text, ?elm:Dynamic):Vnode {
         var key = data == null ? null : data.key;
         return {sel: sel, data: data, children: children,
             text: text, elm: elm};
@@ -31,7 +31,7 @@ class PatchDom {
 
     inline static function createKeyToOldIdx(children:Vnodes, beginIdx, endIdx) {
         var i, map:haxe.DynamicAccess<Dynamic> = {}, key;
-        for (i in beginIdx... endIdx - 1) {
+        for (i in beginIdx... endIdx+1) {
             key = children[i].data.key;
             if (isDef(key)) map[key] = i;
         }
@@ -45,7 +45,8 @@ class PatchDom {
     }
 
 
-    inline static function createElm(vnode:Vnode, insertedVnodeQueue:Vnodes) {
+
+     static function createElm(vnode:Vnode, insertedVnodeQueue:Vnodes) {
         var i:HookApi, data:VirtualNodeData = vnode.data;
         if (isDef(data)) {
             if (isDef(i = data.hook) && isDef(i.init)) {
@@ -71,8 +72,12 @@ class PatchDom {
 
             i = vnode.data.hook; // Reuse variable
             if (isDef(i)) {
-                if (i.create != null) i.create(emptyNode, vnode);
-                if (i.insert != null) insertedVnodeQueue.push(vnode);
+                if (i.create != null){
+                    i.create(emptyNode, vnode);
+                }
+                if (i.insert != null){
+                    insertedVnodeQueue.push(vnode);
+                }
             }
 
         } else {
@@ -84,7 +89,7 @@ class PatchDom {
     inline static function addVnodes(parentElm:NativeNode, before, vnodes, startIdx, endIdx, insertedVnodeQueue) {
 
         var new_node;
-        for (startIdx in startIdx ...endIdx - 1) {
+        for (startIdx in startIdx ...endIdx+1) {
             new_node = createElm(vnodes[startIdx], insertedVnodeQueue);
             parentElm.insertBefore(new_node, before);
         }
@@ -107,7 +112,7 @@ class PatchDom {
 
     inline static function removeVnodes(parentElm:NativeNode, vnodes:Vnodes, startIdx, endIdx) {
 
-        for (startIdx in startIdx... endIdx - 1) {
+        for (startIdx in startIdx... endIdx+1) {
             var listeners, rm:Closure = null, ch:VirtualNode<NativeNode> = vnodes[startIdx];
             if (isDef(ch)) {
                 if (isDef(ch.sel)) {
@@ -212,12 +217,12 @@ class PatchDom {
         if (isDef(hook) && isDef(hook.update)) hook.update(oldVnode, vnode);
 
         if (isUndef(vnode.text)) {
-            if (isDef(oldCh) && isDef(ch)) {
+            if (isDef(oldCh) &&oldCh.length>0 && isDef(ch) &&ch.length>0) {
                 if (oldCh != ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue);
-            } else if (isDef(ch)) {
-                addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue);
+            } else if (isDef(ch) &&ch.length>0) {
+                addVnodes(elm, null, ch, 0, ch.length-1, insertedVnodeQueue);
             } else if (isDef(oldCh)) {
-                removeVnodes(elm, oldCh, 0, oldCh.length - 1);
+                removeVnodes(elm, oldCh, 0, oldCh.length-1);
             }
         } else if (oldVnode.text != vnode.text) {
             elm.textContent = vnode.text;
