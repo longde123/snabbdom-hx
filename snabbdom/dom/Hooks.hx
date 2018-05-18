@@ -41,55 +41,23 @@ class Hooks {
     inline public static function create(oldVnode:VirtualNodeDom, vnode:VirtualNodeDom) {
 
         var elm:VirtualNodeData = cast vnode.elm;
-        var apply_hooks = if (vnode.data.___cache.contains(CacheDom.cacheAll) == false) {
-            true;
-        } else {
-            if (elm.___cache == null) {
-                elm.___cache = 1;
-                true;
-            } else {
-                if (elm.___cache == 1) {
-                    false;
-                } else {
-                    true;
-                }
-            }
-        };
 
-        if (apply_hooks) {
             Attributes.create(oldVnode, vnode);
             Props.create(oldVnode, vnode);
             CssClasses.create(oldVnode, vnode);
             Styles.create(oldVnode, vnode);
             Events.create(oldVnode, vnode);
-        }
     }
 
     inline public static function update(oldVnode:VirtualNodeDom, vnode:VirtualNodeDom) {
 
-        var elm:VirtualNodeData = cast vnode.elm;
-        var apply_hooks = if (vnode.data.___cache.contains(CacheDom.cacheAll) == false) {
-            true;
-        } else {
-            if (elm.___cache == null) {
-                elm.___cache = 1;
-                true;
-            } else {
-                if (elm.___cache == 1) {
-                    false;
-                } else {
-                    true;
-                }
-            }
-        };
 
-        if (apply_hooks) {
             Attributes.update(oldVnode, vnode);
             Props.update(oldVnode, vnode);
             CssClasses.update(oldVnode, vnode);
             Styles.update(oldVnode, vnode);
             Events.update(oldVnode, vnode);
-        }
+
     }
 
 

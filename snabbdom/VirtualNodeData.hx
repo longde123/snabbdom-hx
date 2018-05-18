@@ -1,6 +1,5 @@
 package snabbdom;
 
-import snabbdom.dom.CacheDom;
 import snabbdom.dom.Hooks.HookApi;
 typedef VirtualNodeData = {
 attrs:DynamicObject<Dynamic>,
@@ -12,6 +11,5 @@ hook:HookApi,
 skip_styles:Bool,
 skip_attributes:Bool,
 key:Null<String>,
-ns:DynamicObject<Dynamic>,
-___cache:CacheDom
+ns:DynamicObject<Dynamic>
 }

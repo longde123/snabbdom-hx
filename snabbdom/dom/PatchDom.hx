@@ -25,7 +25,7 @@ class PatchDom {
 
     static var emptyNode = vnode('', {}, [], null, null);
 
-    inline static function sameVnode(vnode1:Vnode, vnode2:Vnode) {
+    inline static public function sameVnode(vnode1:Vnode, vnode2:Vnode) {
         return vnode1.data.key == vnode2.data.key && vnode1.sel == vnode2.sel;
     }
 
@@ -240,6 +240,7 @@ class PatchDom {
         var insertedVnodeQueue:Vnodes = [];
         if (untyped oldVnode.parentElement != null) {
             createElm(vnode, insertedVnodeQueue);
+
             oldVnode.parentElement.replaceChild(vnode.elm, oldVnode);
         } else {
             oldVnode = untyped emptyNodeAt(untyped oldVnode);

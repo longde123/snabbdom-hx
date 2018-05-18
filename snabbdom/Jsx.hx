@@ -1,6 +1,5 @@
 package snabbdom;
 
-import snabbdom.dom.CacheDom;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.ExprTools;
@@ -10,40 +9,12 @@ import haxe.macro.ExprTools;
 //https://github.com/massiveinteractive/haxe-react/blob/master/src/lib/api/react/ReactMacro.hx
 
 class Jsx {
-    #if macro
+     #if macro
 	static var reInterpolationClass = ~/(<|<\/)\$/g;
 	static var reInterpolationVar = ~/\$([a-z_][a-z0-9_]*)/gi;
 	static var reInterpolationExpr = ~/\${/g;
 	static var reAttributeBinding = ~/=({[^}]+})/g;
 
-
-	inline static function setCache(node:Xml) {
-
-		var cache_string = [];
-
-		var cache_node:CacheDom = 0;
-		var interpolated = false;
-		for (attr in node.attributes()) {
-			var value = node.get(attr);
-			if (isInterploated(value) == false)  {
-				if (attr == 'style') {
-					cache_node = cache_node.add(cacheStyle);
-					cache_string.push('cacheStyle');
-				}
-			} else {
-				if (interpolated == false) interpolated = true;
-			}
-		}
-		if (interpolated == false) {
-			cache_node = cache_node.add(cacheAll);
-			cache_string.push('cacheAll');
-		}
-
-
-		node.set('___cache','$cache_node');
-		node.set('___cache_sting','${cache_string.join(" ")}');
-
-	}
 
 
 	public static macro function jsx(expr:ExprOf<String>)
@@ -102,7 +73,7 @@ class Jsx {
 		var attrs = [];
 		var skip_styles = true;
 		var skip_attributes = true;
-		setCache(xml);
+
 		for (attr in xml.attributes())
 		{
 			var value = xml.get(attr);
